@@ -29,6 +29,8 @@ export default function SignupPage() {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
 
+    const rawPhone = phoneNumber.replace(/-/g, "");
+
     try {
       setLoading(true);
 
@@ -36,7 +38,7 @@ export default function SignupPage() {
         `${import.meta.env.VITE_API_URL}/t-age/users/${userId}/phone`,
         {
           name,
-          phoneNumber,
+          phoneNumber: rawPhone,
         },
       );
 
