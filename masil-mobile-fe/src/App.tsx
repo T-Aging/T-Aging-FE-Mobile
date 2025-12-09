@@ -8,6 +8,7 @@ import OrderHistory from "./pages/OrderHistory";
 import ProfilePage from "./pages/ProfilePage";
 import Layout from "./layout/Layout";
 import KakaoRedirect from "./pages/KakaoRedirect";
+import PWAInstallUI from "./components/PWAInstallUI";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <PWAInstallUI />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </>
