@@ -41,8 +41,8 @@ const OrderHistory = () => {
       <div className="bg-[#F6E7B4] px-4 py-3">
         <button
           onClick={handleBack}
-          className="flex w-full items-center gap-2 rounded-xl bg-[#F0DFA8] py-3 pl-3"
-          style={{ fontSize: "4.8vw", fontWeight: 500, color: "#4A3828" }}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F0DFA8] py-3"
+          style={{ fontSize: "5.5vw", fontWeight: 600, color: "#4A3828" }}
         >
           ← 뒤로가기
         </button>

@@ -46,15 +46,18 @@ const MYQR = () => {
     <div className="flex min-h-screen w-full flex-col items-center bg-[#F5EEDC]">
       {/* 상단 뒤로가기 헤더 */}
       <div className="flex h-14 w-full items-center gap-2 bg-[#F6E7B4] px-4">
-        <button onClick={handleBack} className="text-[22px]">
-          ←
+        <button
+          onClick={handleBack}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F0DFA8] py-3"
+          style={{ fontSize: "5.5vw", fontWeight: 600, color: "#4A3828" }}
+        >
+          ← 뒤로가기
         </button>
-        <span className="text-[16px] text-[#4A3828]">뒤로가기</span>
       </div>
 
       {/* 제목 */}
       <div className="mt-10 mb-6 w-full text-center">
-        <h2 className="text-[20px] font-semibold text-[#4A3828]">
+        <h2 className="text-[7vw] font-semibold text-[#4A3828]">
           회원님의 QR 코드
         </h2>
       </div>

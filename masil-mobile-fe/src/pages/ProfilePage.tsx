@@ -42,14 +42,17 @@ const ProfilePage = () => {
     <div className="min-h-screen w-full bg-[#F5EEDC]">
       {/* 상단 헤더 */}
       <div className="flex h-14 w-full items-center gap-2 bg-[#F6E7B4] px-4">
-        <button onClick={handleBack} className="text-[22px]">
-          ←
+        <button
+          onClick={handleBack}
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#F0DFA8] py-3"
+          style={{ fontSize: "5.5vw", fontWeight: 600, color: "#4A3828" }}
+        >
+          ← 뒤로가기
         </button>
-        <span className="text-[16px] text-[#4A3828]">뒤로가기</span>
       </div>
 
       {/* 제목 */}
-      <h2 className="mt-6 px-6 text-[6.5vw] font-semibold text-[#4A3828]">
+      <h2 className="mt-6 px-6 text-[9vw] font-semibold text-[#4A3828]">
         개인정보
       </h2>
 
