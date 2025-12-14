@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ export default function SignupPage() {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   const formatPhone = (value: string) => {
     const onlyNums = value.replace(/[^0-9]/g, "");
@@ -22,12 +23,46 @@ export default function SignupPage() {
     )}`;
   };
 
+  // 페이지 진입 시 필수 정보 등록 여부 확인
+  useEffect(() => {
+    const checkUserInfo = async () => {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("accessToken");
+      if (!userId || !token) return;
+
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/t-age/users/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        const phone = res.data?.data?.phone;
+
+        if (phone) {
+          navigate("/home", { replace: true });
+          return;
+        }
+      } catch (err) {
+        console.error("사용자 정보 조회 실패:", err);
+      } finally {
+        setChecking(false);
+      }
+    };
+
+    checkUserInfo();
+  }, [navigate]);
+
   const handleSubmit = async () => {
     if (loading) return;
     if (!name.trim() || !phoneNumber.trim()) return;
 
     const userId = localStorage.getItem("userId");
-    if (!userId) return;
+    const token = localStorage.getItem("accessToken");
+    if (!userId || !token) return;
 
     const rawPhone = phoneNumber.replace(/-/g, "");
 
@@ -38,7 +73,12 @@ export default function SignupPage() {
         `${import.meta.env.VITE_API_URL}/t-age/users/${userId}/phone`,
         {
           name,
-          phoneNumber: rawPhone,
+          phone: rawPhone,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
       );
 
@@ -49,6 +89,9 @@ export default function SignupPage() {
       setLoading(false);
     }
   };
+
+  // 사용자 상태 확인 중에는 렌더링하지 않음
+  if (checking) return null;
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-[#F5EEDC] px-6 pt-20">
@@ -76,6 +119,7 @@ export default function SignupPage() {
 
         <button
           onClick={handleSubmit}
+          disabled={loading}
           className="mt-4 w-full rounded-xl bg-[#F6E7B4] p-4 text-[18px] font-semibold text-[#4A3828] disabled:opacity-60"
         >
           {loading ? "등록 중..." : "등록하고 시작하기"}
