@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "@/apis/axiosInstance"; // axios 인스턴스 사용
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -14,8 +14,9 @@ export default function SignupPage() {
     const onlyNums = value.replace(/[^0-9]/g, "");
 
     if (onlyNums.length < 4) return onlyNums;
-    if (onlyNums.length < 8)
+    if (onlyNums.length < 8) {
       return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+    }
 
     return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(
       7,
@@ -23,25 +24,24 @@ export default function SignupPage() {
     )}`;
   };
 
-  // 페이지 진입 시 필수 정보 등록 여부 확인
+  // 페이지 진입 시: 필수 정보(전화번호) 등록 여부 확인
   useEffect(() => {
     const checkUserInfo = async () => {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("accessToken");
-      if (!userId || !token) return;
+
+      // 로그인 정보 자체가 없으면
+      // → 체크 종료, 입력 화면 보여줌
+      if (!userId || !token) {
+        setChecking(false);
+        return;
+      }
 
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/t-age/users/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
+        const res = await api.get(`/t-age/users/${userId}`);
         const phone = res.data?.data?.phone;
 
+        // 이미 전화번호 등록된 유저면 홈으로
         if (phone) {
           navigate("/home", { replace: true });
           return;
@@ -49,6 +49,7 @@ export default function SignupPage() {
       } catch (err) {
         console.error("사용자 정보 조회 실패:", err);
       } finally {
+        // 어떤 경우든 반드시 false
         setChecking(false);
       }
     };
@@ -61,26 +62,17 @@ export default function SignupPage() {
     if (!name.trim() || !phoneNumber.trim()) return;
 
     const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("accessToken");
-    if (!userId || !token) return;
+    if (!userId) return;
 
     const rawPhone = phoneNumber.replace(/-/g, "");
 
     try {
       setLoading(true);
 
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/t-age/users/${userId}/phone`,
-        {
-          name,
-          phone: rawPhone,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      await api.post(`/t-age/users/${userId}/phone`, {
+        name,
+        phone: rawPhone,
+      });
 
       navigate("/home");
     } catch (err) {

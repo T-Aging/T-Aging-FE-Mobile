@@ -12,7 +12,7 @@ const KakaoRedirect = () => {
     const sendCode = async () => {
       try {
         const res = await kakaoLogin(code);
-        const data = res?.data;
+        const data = res.data;
 
         const userId = data.userId;
         localStorage.setItem("userId", userId);
