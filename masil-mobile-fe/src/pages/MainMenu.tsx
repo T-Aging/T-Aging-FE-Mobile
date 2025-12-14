@@ -52,11 +52,6 @@ const MainMenu = () => {
           </span>
         </button>
       </div>
-
-      {/* 앱 사용방법 버튼 */}
-      <button className="mt-5 flex w-[80%] items-center justify-center gap-2 rounded-xl bg-[#6B3F21] py-4 text-[16px] font-medium text-white shadow-md">
-        앱 사용방법
-      </button>
     </div>
   );
 };
