@@ -9,7 +9,6 @@ import ProfilePage from "./pages/ProfilePage";
 import Layout from "./layout/Layout";
 import KakaoRedirect from "./pages/KakaoRedirect";
 import PWAInstallUI from "./components/PWAInstallUI";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -18,40 +17,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
-      { path: "redirect", element: <KakaoRedirect /> },
-
       {
-        path: "home",
-        element: (
-          <ProtectedRoute>
-            <MainMenu />
-          </ProtectedRoute>
-        ),
+        path: "redirect",
+        element: <KakaoRedirect />,
       },
-      {
-        path: "qr",
-        element: (
-          <ProtectedRoute>
-            <MyQR />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "orders",
-        element: (
-          <ProtectedRoute>
-            <OrderHistory />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "profile",
-        element: (
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        ),
-      },
+      { path: "home", element: <MainMenu /> },
+      { path: "qr", element: <MyQR /> },
+      { path: "orders", element: <OrderHistory /> },
+      { path: "profile", element: <ProfilePage /> },
     ],
   },
 ]);
